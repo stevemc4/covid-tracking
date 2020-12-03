@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Reports</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Reports</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list *ngIf="names.length > 0">
+    <ng-template ngFor let-name [ngForOf]="names">
+      <ion-item>
+        <ion-label>{{name}}</ion-label>
+      </ion-item>
+    </ng-template>
+  </ion-list>
+  <div id="empty" *ngIf="names.length === 0">
+    <strong>No Reports Yet</strong>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onFabClick()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
