@@ -1,5 +1,7 @@
 {
   "name": "covid-track",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
