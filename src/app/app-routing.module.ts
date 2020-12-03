@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'my-reports',
     loadChildren: () => import('./pages/my-reports/my-reports.module').then( m => m.MyReportsPageModule)
   },
+  {
+    path: 'new-report',
+    loadChildren: () => import('./pages/new-report/new-report.module').then( m => m.NewReportPageModule)
+  },
 ];
 
 @NgModule({

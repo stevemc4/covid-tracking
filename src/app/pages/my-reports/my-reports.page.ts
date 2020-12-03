@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-reports',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyReportsPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   names = [
   ]
@@ -16,10 +17,7 @@ export class MyReportsPage implements OnInit {
   }
 
   onFabClick() {
-    this.names = [
-      ...this.names,
-      'Juan'
-    ]
+    this.router.navigate(['/new-report'])
   }
 
 }

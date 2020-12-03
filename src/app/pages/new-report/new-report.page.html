@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/my-reports"></ion-back-button>
+    </ion-buttons>
+    <ion-title>New Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Age</ion-label>
+    <ion-input type="number"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Gender</ion-label>
+    <ion-select placeholder="Select One">
+      <ion-select-option value="f">Female</ion-select-option>
+      <ion-select-option value="m">Male</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Province</ion-label>
+    <ion-select placeholder="Select One" (ionChange)="handleProvinceChange($event)">
+      <ion-select-option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>City</ion-label>
+    <ion-select placeholder="Select One" disabled="{{cities.length === 0}}" (ionChange)="handleCityChange($event)">
+      <ion-select-option *ngFor="let city of cities" [value]="city.id">{{city.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>District</ion-label>
+    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}">
+      <ion-select-option *ngFor="let district of districts" [value]="district.id">{{district.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Address</ion-label>
+    <ion-input></ion-input>
+  </ion-item>
+</ion-content>
