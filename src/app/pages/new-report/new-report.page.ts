@@ -105,7 +105,7 @@ export class NewReportPage implements OnInit {
       let filePath: Observable<any> = null
       
       if (this.imageUrl !== this.defaultImage) {
-        const imgRef = this.storage.ref(`images/${this.name}_${new Date().getTime}_${this.selectedDistrict}.png`)
+        const imgRef = this.storage.ref(`images/${this.name}_${new Date().getTime()}_${this.selectedDistrict}.png`)
         await imgRef.putString(this.imageUrl, 'data_url')
         filePath = imgRef.getDownloadURL()
       }
@@ -116,8 +116,7 @@ export class NewReportPage implements OnInit {
         deleted: false
       },
       'reportedCases',
-      async (id) => { 
-        console.log(id)
+      async (id) => {
         const toast = await this.toastController.create({
           message: "Report Submitted!",
           duration: 2500
@@ -126,7 +125,7 @@ export class NewReportPage implements OnInit {
         this.router.navigate(['/my-reports'])
       },
       async (err) => {
-        console.log(err)
+        console.error(err)
         const toast = await this.toastController.create({
           message: "An error occured. Please try again later",
           duration: 2500
@@ -135,7 +134,7 @@ export class NewReportPage implements OnInit {
         this.state = States.IDLE
       })
     } catch (e) {
-      console.log(e)
+      console.error(e)
       const toast = await this.toastController.create({
         message: "An error occured. Please try again later",
         duration: 2500
