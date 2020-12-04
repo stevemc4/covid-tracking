@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:348034440622:android:ccca7964a52b7d1d32fc3f",
         "android_client_info": {
-          "package_name": "me.dhikarizky.covidtrack"
+          "package_name": "me.dhikarizky.covidtracker"
         }
       },
       "oauth_client": [
