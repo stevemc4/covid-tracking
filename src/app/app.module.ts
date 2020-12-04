@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx'
 
 import { AngularFireModule } from '@angular/fire'
 import { AngularFireStorageModule } from '@angular/fire/storage'
+import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 
 import { AppComponent } from './app.component'
 import { AppRoutingModule } from './app-routing.module'
@@ -27,7 +28,8 @@ import { environment } from '../environments/environment'
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    FirebaseX
   ],
   bootstrap: [AppComponent]
 })

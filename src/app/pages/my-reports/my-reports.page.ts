@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { FirebaseX } from '@ionic-native/firebase-x/ngx'
+
 @Component({
   selector: 'app-my-reports',
   templateUrl: './my-reports.page.html',
@@ -8,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class MyReportsPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private firebase: FirebaseX) { }
 
   names = [
   ]

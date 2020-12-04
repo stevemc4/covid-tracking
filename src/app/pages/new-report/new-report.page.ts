@@ -54,7 +54,6 @@ export class NewReportPage implements OnInit {
     this.districts = []
     this.imageUrl = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw=='
     this.defaultImage = this.imageUrl
-    firebase.getToken().then(token => console.log(token))
   }
 
   ngOnInit() {
