@@ -48,7 +48,7 @@ export class NewReportPage implements OnInit {
   selectImage() {
     this.imagePicker.getPictures({ allow_video: false, maximumImagesCount: 1}).then((results) => {
       if (results.length > 0) {
-        this.imageUrl = results[0]
+        this.imageUrl = results[0].replace('file://', '')
       }
     }, (err) => { });
   }
