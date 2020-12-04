@@ -16,7 +16,11 @@ export class MyReportsPage implements OnInit {
     this.data = []
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+  }
+  
+  async ionViewDidEnter() {
+    console.log("Fetching Reports...")
     await this.fetchData()
   }
 
