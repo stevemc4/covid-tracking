@@ -8,12 +8,26 @@ import { AngularFireStorage } from '@angular/fire/storage'
 import regions, { Cities, Districts, Provinces } from '../../helper/region'
 import { Observable } from 'rxjs'
 
+enum States {
+  IDLE,
+  SUBMITTING
+}
+
 @Component({
   selector: 'app-new-report',
   templateUrl: './new-report.page.html',
   styleUrls: ['./new-report.page.scss'],
 })
 export class NewReportPage implements OnInit {
+
+  // Data
+  defaultImage: string
+  provinces: Provinces[]
+  cities: Cities[]
+  districts: Districts[]
+
+  // States
+  state: States
 
   // Models
   name: string
@@ -24,20 +38,17 @@ export class NewReportPage implements OnInit {
   selectedDistrict: string
   address: string
   imageUrl: string
-  defaultImage: string
 
-  provinces: Provinces[]
-  cities: Cities[]
-  districts: Districts[]
 
   constructor(
-      private imagePicker: ImagePicker,
-      public platform: Platform,
-      public toastController: ToastController,
-      private firebase: FirebaseX,
-      private router: Router,
-      private storage: AngularFireStorage
-    ) {
+    private imagePicker: ImagePicker,
+    public platform: Platform,
+    public toastController: ToastController,
+    private firebase: FirebaseX,
+    private router: Router,
+    private storage: AngularFireStorage
+  ){
+    this.state = States.IDLE 
     this.provinces = regions.getProvinces()
     this.cities = []
     this.districts = []
@@ -72,11 +83,16 @@ export class NewReportPage implements OnInit {
   }
 
   checkSubmitStatus(): boolean {
-    return !(this.name !== undefined && this.age !== undefined && this.gender !== undefined && this.selectedDistrict !== undefined && this.address !== undefined)
+    return !(this.name !== undefined && this.age !== undefined && this.gender !== undefined && this.selectedDistrict !== undefined && this.address !== undefined && this.state !== States.SUBMITTING)
+  }
+
+  getSubmitButtonText(): string {
+    return this.state === States.SUBMITTING ? 'Submitting...' : 'Submit'
   }
 
   async handleSubmit() {
     try {
+      this.state = States.SUBMITTING
       const data = {
         name: this.name,
         age: this.age,
@@ -117,6 +133,7 @@ export class NewReportPage implements OnInit {
           duration: 2500
         })
         toast.present()
+        this.state = States.IDLE
       })
     } catch (e) {
       console.log(e)
@@ -125,6 +142,7 @@ export class NewReportPage implements OnInit {
         duration: 2500
       })
       toast.present()
+      this.state = States.IDLE
     }
   }
 

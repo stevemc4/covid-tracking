@@ -52,5 +52,5 @@
     <ion-label position="floating">Address</ion-label>
     <ion-input [(ngModel)]="address"></ion-input>
   </ion-item>
-  <ion-button expand="block" size="default" (click)="handleSubmit()"  [disabled]="checkSubmitStatus()">Submit</ion-button>
+  <ion-button expand="block" size="default" (click)="handleSubmit()"  [disabled]="checkSubmitStatus()">{{getSubmitButtonText()}}</ion-button>
 </ion-content>
