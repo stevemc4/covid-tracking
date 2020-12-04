@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ImagePicker } from '@ionic-native/image-picker/ngx'
 
 import { IonicModule } from '@ionic/angular';
 
@@ -15,6 +16,9 @@ import { NewReportPage } from './new-report.page';
     IonicModule,
     NewReportPageRoutingModule
   ],
-  declarations: [NewReportPage]
+  declarations: [NewReportPage],
+  providers: [
+    ImagePicker
+  ]
 })
 export class NewReportPageModule {}

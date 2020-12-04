@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { ImagePicker } from '@ionic-native/image-picker/ngx'
+import { Platform, ToastController } from '@ionic/angular'
 
 import regions, { Cities, Districts, Provinces } from '../../helper/region'
 
@@ -9,14 +11,20 @@ import regions, { Cities, Districts, Provinces } from '../../helper/region'
 })
 export class NewReportPage implements OnInit {
 
-  provinces: Provinces[]
+  // Models
+  name: string
+  age: number
+  gender: string
   selectedProvince: string
-  cities: Cities[]
   selectedCity: string
-  districts: Districts[]
   selectedDistrict: string
+  address: string
 
-  constructor() {
+  provinces: Provinces[]
+  cities: Cities[]
+  districts: Districts[]
+
+  constructor(private imagePicker: ImagePicker, public platform: Platform, public toastController: ToastController) {
     this.provinces = regions.getProvinces()
     this.cities = []
     this.districts = []
@@ -33,6 +41,27 @@ export class NewReportPage implements OnInit {
   handleCityChange(e) {
     this.selectedCity = e.target.value
     this.districts = regions.getDistricts(e.target.value)
+  }
+
+  selectImage() {
+    if (this.platform.is('android')) {
+      this.imagePicker.getPictures({}).then((results) => {
+        for (var i = 0; i < results.length; i++) {
+            console.log('Image URI: ' + results[i]);
+        }
+      }, (err) => { });
+    } else {
+      console.log('Pick image')
+    }
+  }
+
+  async handleSubmit() {
+    // actually do submit
+    const toast = await this.toastController.create({
+      message: "Report Submitted!",
+      duration: 2500
+    })
+    toast.present()
   }
 
 }
