@@ -28,6 +28,11 @@ export class MyReportsPage implements OnInit {
     }, () => {})
   }
 
+  async handleRefresh(e) {
+    await this.fetchData()
+    e.target.complete()
+  }
+
   onFabClick() {
     this.router.navigate(['/new-report'])
   }
