@@ -10,10 +10,10 @@
       <ion-title size="large">My Reports</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-list *ngIf="names.length > 0">
-    <ng-template ngFor let-name [ngForOf]="names">
+  <ion-list *ngIf="data.length > 0">
+    <ng-template ngFor let-case [ngForOf]="data">
       <ion-item>
-        <ion-label>{{name}}</ion-label>
+        <ion-label>{{case.name}}</ion-label>
       </ion-item>
     </ng-template>
   </ion-list>

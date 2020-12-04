@@ -10,12 +10,15 @@ import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 })
 export class MyReportsPage implements OnInit {
 
-  constructor(private router: Router, private firebase: FirebaseX) { }
+  data: any[]
 
-  names = [
-  ]
+  constructor(private router: Router, private firebase: FirebaseX) {
+    this.data = []
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const data = await this.firebase.fetchFirestoreCollection('reported-cases', () => {}, () => {})
+    this.data = data
   }
 
   onFabClick() {
