@@ -9,6 +9,9 @@
 
 <ion-content [fullscreen]="true">
   <ion-item>
+    <ion-avatar slot="start" id="imageContainer">
+      <img [src]="imageUrl">
+    </ion-avatar>
     <ion-label>Picture</ion-label>
     <ion-button (click)="selectImage()" size="default">Select Image</ion-button>
   </ion-item>

@@ -19,6 +19,7 @@ export class NewReportPage implements OnInit {
   selectedCity: string
   selectedDistrict: string
   address: string
+  imageUrl: string
 
   provinces: Provinces[]
   cities: Cities[]
@@ -28,6 +29,7 @@ export class NewReportPage implements OnInit {
     this.provinces = regions.getProvinces()
     this.cities = []
     this.districts = []
+    this.imageUrl = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw=='
   }
 
   ngOnInit() {
@@ -44,15 +46,11 @@ export class NewReportPage implements OnInit {
   }
 
   selectImage() {
-    if (this.platform.is('android')) {
-      this.imagePicker.getPictures({}).then((results) => {
-        for (var i = 0; i < results.length; i++) {
-            console.log('Image URI: ' + results[i]);
-        }
-      }, (err) => { });
-    } else {
-      console.log('Pick image')
-    }
+    this.imagePicker.getPictures({ allow_video: false, maximumImagesCount: 1}).then((results) => {
+      if (results.length > 0) {
+        this.imageUrl = results[0]
+      }
+    }, (err) => { });
   }
 
   async handleSubmit() {
