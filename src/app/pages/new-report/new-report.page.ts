@@ -107,7 +107,7 @@ export class NewReportPage implements OnInit {
       if (this.imageUrl !== this.defaultImage) {
         const imgRef = this.storage.ref(`images/${this.name}_${new Date().getTime()}_${this.selectedDistrict}.png`)
         await imgRef.putString(this.imageUrl, 'data_url')
-        filePath = imgRef.getDownloadURL()
+        filePath = await imgRef.getDownloadURL().toPromise()
       }
   
       await this.firebase.addDocumentToFirestoreCollection({
