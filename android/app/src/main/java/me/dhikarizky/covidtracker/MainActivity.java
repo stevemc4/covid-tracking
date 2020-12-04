@@ -1,4 +1,4 @@
-package me.dhikarizky.covidtrack;
+package me.dhikarizky.covidtracker;
 
 import android.os.Bundle;
 

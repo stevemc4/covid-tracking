@@ -1,5 +1,5 @@
 {
-  "appId": "me.dhikarizky.covid-tracker",
+  "appId": "me.dhikarizky.covidtracker",
   "appName": "covid-track",
   "bundledWebRuntime": false,
   "npmClient": "npm",
