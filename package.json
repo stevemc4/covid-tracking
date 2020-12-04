@@ -16,6 +16,7 @@
   "dependencies": {
     "@angular/common": "~10.0.0",
     "@angular/core": "~10.0.0",
+    "@angular/fire": "^6.1.4",
     "@angular/forms": "~10.0.0",
     "@angular/platform-browser": "~10.0.0",
     "@angular/platform-browser-dynamic": "~10.0.0",
@@ -33,6 +34,7 @@
     "cordova-plugin-firebasex": "^11.0.3",
     "cordova-plugin-telerik-imagepicker": "^2.3.6",
     "cordova-support-android-plugin": "^1.0.2",
+    "firebase": "^8.1.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
