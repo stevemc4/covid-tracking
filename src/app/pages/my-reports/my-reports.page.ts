@@ -26,10 +26,10 @@ export class MyReportsPage implements OnInit {
 
   async fetchData() {
     this.firebase.fetchFirestoreCollection('reportedCases', (docs) => {
+      console.log(`CURRENT REPORTS: ${JSON.stringify(docs)}`)
       const data = Object.values(docs)
-      console.log(`CURRENT REPORTS: ${JSON.stringify(data)}`)
       this.data = data
-    }, () => {})
+    }, (err) => { console.error(err) })
   }
 
   async handleRefresh(e) {
