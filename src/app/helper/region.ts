@@ -2,7 +2,7 @@ import provinces from '../data/regions/provinces'
 import cities from '../data/regions/cities'
 import districts from '../data/regions/districts'
 
-interface Provinces {
+interface Province {
   id: string,
   name: string,
   alt_name: string,
@@ -10,7 +10,7 @@ interface Provinces {
   longitude: number
 }
 
-interface Cities {
+interface City {
   id: string,
   province_id: string,
   name: string,
@@ -19,7 +19,7 @@ interface Cities {
   longitude: number
 }
 
-interface Districts {
+interface District {
   id: string,
   regency_id: string,
   name: string,
@@ -28,17 +28,29 @@ interface Districts {
   longitude: number
 }
 
-const getProvinces = (): Provinces[] => {
+const getProvinces = (): Province[] => {
   return provinces
 }
 
-const getCities = (id: string): Cities[] => {
+const getProvince = (id: string): Province => {
+  return provinces.find(province => province.id === id)
+}
+
+const getCities = (id: string): City[] => {
   return cities.filter(city => city.province_id === id)
 }
 
-const getDistricts = (id: string): Districts[] => {
+const getCity = (id: string): City => {
+  return cities.find(city => city.id === id)
+}
+
+const getDistricts = (id: string): District[] => {
   return districts.filter(district => district.regency_id === id)
 }
 
-export default { getProvinces, getCities, getDistricts }
-export { Provinces, getProvinces, Cities, getCities, Districts, getDistricts }
+const getDistrict = (id: string): District => {
+  return districts.find(district => district.id === id)
+}
+
+export default { getProvinces, getCities, getDistricts, getProvince, getCity, getDistrict }
+export { Province, getProvinces, City, getCities, District, getDistricts, getProvince, getCity, getDistrict }

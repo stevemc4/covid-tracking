@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 import { AngularFireStorage } from '@angular/fire/storage'
 
-import regions, { Cities, Districts, Provinces } from '../../helper/region'
+import regions, { City, District, Province } from '../../helper/region'
 import { Observable } from 'rxjs'
 
 enum States {
@@ -22,9 +22,9 @@ export class NewReportPage implements OnInit {
 
   // Data
   defaultImage: string
-  provinces: Provinces[]
-  cities: Cities[]
-  districts: Districts[]
+  provinces: Province[]
+  cities: City[]
+  districts: District[]
 
   // States
   state: States
