@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore'
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 
 @Component({
   selector: 'app-my-reports',
@@ -10,10 +11,10 @@ import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 })
 export class MyReportsPage implements OnInit {
 
-  data: any[]
+  data: Observable<any[]>
 
-  constructor(private router: Router, private firebase: FirebaseX) {
-    this.data = []
+  constructor(private router: Router, private firestore: AngularFirestore) {
+    // this.data = []
   }
 
   ngOnInit() {
@@ -25,11 +26,7 @@ export class MyReportsPage implements OnInit {
   }
 
   async fetchData() {
-    this.firebase.fetchFirestoreCollection('reportedCases', (docs) => {
-      console.log(`CURRENT REPORTS: ${JSON.stringify(docs)}`)
-      const data = Object.values(docs)
-      this.data = data
-    }, (err) => { console.error(err) })
+    this.data = this.firestore.collection('reportedCases').valueChanges()
   }
 
   async handleRefresh(e) {
