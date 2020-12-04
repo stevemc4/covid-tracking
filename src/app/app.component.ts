@@ -22,10 +22,15 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.firebase.getToken()
+      try {
+        const token = await this.firebase.getToken()
+        console.log(token)
+      } catch (e) {
+        console.log(`Error initializing firebase token: ${e}`)
+      }
     });
   }
 }
