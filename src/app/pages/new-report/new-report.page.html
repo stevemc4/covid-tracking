@@ -44,7 +44,7 @@
   </ion-item>
   <ion-item>
     <ion-label>District</ion-label>
-    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}">
+    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}" (ionChange)="handleDistrictChange($event)">
       <ion-select-option *ngFor="let district of districts" [value]="district.id">{{district.name}}</ion-select-option>
     </ion-select>
   </ion-item>
@@ -52,5 +52,5 @@
     <ion-label position="floating">Address</ion-label>
     <ion-input [(ngModel)]="address"></ion-input>
   </ion-item>
-  <ion-button expand="block" size="default" (click)="handleSubmit()">Submit</ion-button>
+  <ion-button expand="block" size="default" (click)="handleSubmit()"  [disabled]="checkSubmitStatus()">Submit</ion-button>
 </ion-content>

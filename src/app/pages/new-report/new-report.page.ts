@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { ImagePicker } from '@ionic-native/image-picker/ngx'
 import { Platform, ToastController } from '@ionic/angular'
+import { Router } from '@angular/router'
+import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 
 import regions, { Cities, Districts, Provinces } from '../../helper/region'
 
@@ -25,11 +27,18 @@ export class NewReportPage implements OnInit {
   cities: Cities[]
   districts: Districts[]
 
-  constructor(private imagePicker: ImagePicker, public platform: Platform, public toastController: ToastController) {
+  constructor(
+      private imagePicker: ImagePicker,
+      public platform: Platform,
+      public toastController: ToastController,
+      private firebase: FirebaseX,
+      private router: Router
+    ) {
     this.provinces = regions.getProvinces()
     this.cities = []
     this.districts = []
     this.imageUrl = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw=='
+    firebase.getToken().then(token => console.log(token))
   }
 
   ngOnInit() {
@@ -45,6 +54,10 @@ export class NewReportPage implements OnInit {
     this.districts = regions.getDistricts(e.target.value)
   }
 
+  handleDistrictChange(e) {
+    this.selectedDistrict = e.target.value
+  }
+
   selectImage() {
     this.imagePicker.getPictures({ allow_video: false, maximumImagesCount: 1, outputType: 1, width: 720, height: 720, quality: 65}).then((results) => {
       if (results.length > 0) {
@@ -53,13 +66,43 @@ export class NewReportPage implements OnInit {
     }, (err) => { });
   }
 
+  checkSubmitStatus(): boolean {
+    return !(this.name !== undefined && this.age !== undefined && this.gender !== undefined && this.selectedDistrict !== undefined && this.address !== undefined)
+  }
+
   async handleSubmit() {
-    // actually do submit
-    const toast = await this.toastController.create({
-      message: "Report Submitted!",
-      duration: 2500
+    const data = {
+      name: this.name,
+      age: this.age,
+      gender: this.gender,
+      province: this.selectedProvince,
+      city: this.selectedCity,
+      district: this.selectedDistrict,
+      address: this.address
+    }
+
+    await this.firebase.addDocumentToFirestoreCollection({
+      ...data,
+      deleted: false
+    },
+    'reportedCases',
+    async (id) => { 
+      console.log(id)
+      const toast = await this.toastController.create({
+        message: "Report Submitted!",
+        duration: 2500
+      })
+      toast.present()
+      this.router.navigate(['/my-reports'])
+    },
+    async (err) => {
+      console.log(err)
+      const toast = await this.toastController.create({
+        message: "An error occured. Please try again later",
+        duration: 2500
+      })
+      toast.present()
     })
-    toast.present()
   }
 
 }
