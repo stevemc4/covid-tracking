@@ -26,6 +26,23 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.6"
 }
 apply from: "../../node_modules/cordova-plugin-firebasex/src/android/build.gradle"
+apply plugin: 'com.google.firebase.crashlytics'
+android {
+    buildTypes {
+        debug {
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
+        }
+        release {
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir "obj/local"
+                strippedNativeLibsDir "build/intermediates/jniLibs/release"
+            }
+        }
+    }
+}
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()
