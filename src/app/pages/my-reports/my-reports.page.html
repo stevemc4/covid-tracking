@@ -15,8 +15,25 @@
   </ion-refresher> -->
   <ion-list *ngIf="(data | async)?.length > 0">
     <ng-template ngFor let-case [ngForOf]="data | async">
-      <ion-item>
-        <ion-label>{{case.name}}</ion-label>
+      <ion-item lines="full">
+        <ion-avatar slot="start">
+          <img [src]="case.picture">
+        </ion-avatar>
+        <ion-label>
+          {{case.name}}
+          <ion-label color="medium">
+            {{case.gender === 'm' ? 'Male' : 'Female'}} · {{case.age}} years old
+          </ion-label>
+          <ion-label color="medium">
+            {{region.getDistrict(case.district).name}}, {{region.getCity(case.city).name}}, {{region.getProvince(case.province).name}}
+          </ion-label>
+        </ion-label>
+        <ion-button size="medium" fill="clear" color="primary">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+        <ion-button size="medium" fill="clear" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
       </ion-item>
     </ng-template>
   </ion-list>

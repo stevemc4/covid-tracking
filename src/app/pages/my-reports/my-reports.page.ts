@@ -3,6 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore'
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import RegionHelper from '../../helper/region'
+
 
 @Component({
   selector: 'app-my-reports',
@@ -12,26 +14,14 @@ import { Observable } from 'rxjs';
 export class MyReportsPage implements OnInit {
 
   data: Observable<any[]>
+  region: typeof RegionHelper
 
   constructor(private router: Router, private firestore: AngularFirestore) {
-    // this.data = []
+    this.data = this.firestore.collection('reportedCases').valueChanges({ idField: 'id' })
+    this.region = RegionHelper
   }
 
   ngOnInit() {
-  }
-  
-  async ionViewDidEnter() {
-    console.log("Fetching Reports...")
-    await this.fetchData()
-  }
-
-  async fetchData() {
-    this.data = this.firestore.collection('reportedCases').valueChanges()
-  }
-
-  async handleRefresh(e) {
-    await this.fetchData()
-    e.target.complete()
   }
 
   onFabClick() {
