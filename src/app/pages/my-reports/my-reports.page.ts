@@ -17,8 +17,15 @@ export class MyReportsPage implements OnInit {
   }
 
   async ngOnInit() {
-    const data = await this.firebase.fetchFirestoreCollection('reported-cases', () => {}, () => {})
-    this.data = data
+    await this.fetchData()
+  }
+
+  async fetchData() {
+    this.firebase.fetchFirestoreCollection('reportedCases', (docs) => {
+      const data = Object.values(docs)
+      console.log(`CURRENT REPORTS: ${JSON.stringify(data)}`)
+      this.data = data
+    }, () => {})
   }
 
   onFabClick() {
