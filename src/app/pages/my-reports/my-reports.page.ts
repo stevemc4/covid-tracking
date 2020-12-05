@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore'
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular'
 import { Observable } from 'rxjs';
+import firebase from 'firebase/app'
 
 import RegionHelper from '../../helper/region'
 
@@ -18,7 +19,9 @@ export class MyReportsPage implements OnInit {
   region: typeof RegionHelper
 
   constructor(private router: Router, private firestore: AngularFirestore, private alertController: AlertController) {
-    this.data = this.firestore.collection('reportedCases').valueChanges({ idField: 'id' })
+    this.data = this.firestore.collection('reportedCases', q =>
+      q.where('deleted', '==', false)
+    ).valueChanges({ idField: 'id' })
     this.region = RegionHelper
   }
 
@@ -38,7 +41,9 @@ export class MyReportsPage implements OnInit {
           text: 'Delete',
           role: 'primary',
           cssClass: 'danger',
-          handler: () => this.deleteItem(caseData.id)
+          handler: () => {
+            this.deleteItem(caseData.id)
+          }
         },
         {
           text: 'Cancel',
@@ -51,7 +56,10 @@ export class MyReportsPage implements OnInit {
   }
 
   async deleteItem(id: string) {
-
+    await this.firestore.collection('reportedCases').doc(id).update({
+      deleted: true,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
   }
 
 }
