@@ -28,7 +28,7 @@
             {{region.getDistrict(case.district).name}}, {{region.getCity(case.city).name}}, {{region.getProvince(case.province).name}}
           </ion-label>
         </ion-label>
-        <ion-button size="medium" fill="clear" color="primary">
+        <ion-button size="medium" fill="clear" color="primary"(click)="handleUpdate(case.id)">
           <ion-icon name="pencil"></ion-icon>
         </ion-button>
         <ion-button size="medium" fill="clear" color="danger" (click)="handleDelete(case)">

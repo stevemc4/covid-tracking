@@ -32,6 +32,10 @@ export class MyReportsPage implements OnInit {
     this.router.navigate(['/new-report'])
   }
 
+  handleUpdate(id: string) {
+    this.router.navigate([`/update`], { queryParams: { id }})
+  }
+
   async handleDelete(caseData: any) {
     const alert = await this.alertController.create({
       header: `Delete ${caseData.name}`,
