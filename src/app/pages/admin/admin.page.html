@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reported Cases</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text color="primary">
+        <h1>{{(data | async)?.length || 0}}</h1>
+      </ion-text>
+      <ion-text>
+        <span>Cases</span>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Top 5 Regions</ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="groupedData.length > 0; else elseBlock">
+      <ion-item *ngFor="let region of groupedData">
+        <ion-label slot="start">
+          {{regions.getProvince(region.province).name}}
+        </ion-label>
+        <ion-badge slot="end" color="light">
+          {{ region.count }}
+        </ion-badge>
+      </ion-item>
+    </ion-list>
+    <ng-template #elseBlock>
+      <ion-card-content>
+        <ion-text>No Data Yet</ion-text>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+</ion-content>
