@@ -4,6 +4,7 @@ import { Platform, ToastController } from '@ionic/angular'
 import { Router } from '@angular/router'
 import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 import { AngularFireStorage } from '@angular/fire/storage'
+import firebase from 'firebase'
 
 import regions, { City, District, Province } from '../../helper/region'
 import { Observable } from 'rxjs'
@@ -92,6 +93,7 @@ export class NewReportPage implements OnInit {
   async handleSubmit() {
     try {
       this.state = States.SUBMITTING
+      const ts = firebase.firestore.FieldValue.serverTimestamp()
       const data = {
         name: this.name,
         age: this.age,
@@ -113,7 +115,9 @@ export class NewReportPage implements OnInit {
       await this.firebase.addDocumentToFirestoreCollection({
         ...data,
         picture: filePath ?? null,
-        deleted: false
+        deleted: false,
+        createdAt: ts,
+        updatedAt: ts
       },
       'reportedCases',
       async (id) => {
