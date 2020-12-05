@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core'
 import { ImagePicker } from '@ionic-native/image-picker/ngx'
 import { Platform, ToastController } from '@ionic/angular'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 import { AngularFireStorage } from '@angular/fire/storage'
+import { AngularFirestore } from '@angular/fire/firestore'
 import firebase from 'firebase'
 
 import regions, { City, District, Province } from '../../helper/region'
@@ -29,6 +30,7 @@ export class NewReportPage implements OnInit {
 
   // States
   state: States
+  editingId: string
 
   // Models
   name: string
@@ -47,8 +49,13 @@ export class NewReportPage implements OnInit {
     public toastController: ToastController,
     private firebase: FirebaseX,
     private router: Router,
-    private storage: AngularFireStorage
+    private route: ActivatedRoute,
+    private storage: AngularFireStorage,
+    private firestore: AngularFirestore
   ){
+    this.route.queryParams.subscribe(params => {
+      this.editingId = params.id
+    })
     this.state = States.IDLE 
     this.provinces = regions.getProvinces()
     this.cities = []
@@ -57,7 +64,31 @@ export class NewReportPage implements OnInit {
     this.defaultImage = this.imageUrl
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (this.editingId !== null) {
+      const document = this.firestore.collection('reportedCases').doc(this.editingId).get()
+      document.subscribe(docData => {
+        // load data from observer
+        const data: any = docData.data()
+
+        // prefetch address select data
+        this.cities = regions.getCities(data.province)
+        this.districts = regions.getDistricts(data.city)
+
+        // set image
+        this.imageUrl = data.picture
+        this.defaultImage = data.picture
+
+        // set form values
+        this.name = data.name
+        this.age = data.age
+        this.gender = data.gender
+        this.selectedProvince = data.province
+        this.selectedCity = data.city
+        this.selectedDistrict = data.district
+        this.address = data.address
+      })
+    }
   }
 
   handleProvinceChange(e) {
@@ -90,6 +121,33 @@ export class NewReportPage implements OnInit {
     return this.state === States.SUBMITTING ? 'Submitting...' : 'Submit'
   }
 
+  async handleUpload(filename: string) {
+    if (this.imageUrl !== this.defaultImage) {
+      const imgRef = this.storage.ref(filename)
+      await imgRef.putString(this.imageUrl, 'data_url')
+      return await imgRef.getDownloadURL().toPromise()
+    }
+    return null
+  }
+
+  async createNew(data: any) {
+    try {
+      await this.firestore.collection('reportedCases').doc().set(data)
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
+
+  async update(data: any) {
+    try {
+      await this.firestore.collection('reportedCases').doc(this.editingId).update(data)
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
+
   async handleSubmit() {
     try {
       this.state = States.SUBMITTING
@@ -103,40 +161,29 @@ export class NewReportPage implements OnInit {
         district: this.selectedDistrict,
         address: this.address
       }
-  
-      let filePath: Observable<any> = null
-      
-      if (this.imageUrl !== this.defaultImage) {
-        const imgRef = this.storage.ref(`images/${this.name}_${new Date().getTime()}_${this.selectedDistrict}.png`)
-        await imgRef.putString(this.imageUrl, 'data_url')
-        filePath = await imgRef.getDownloadURL().toPromise()
-      }
-  
-      await this.firebase.addDocumentToFirestoreCollection({
-        ...data,
-        picture: filePath ?? null,
-        deleted: false,
-        createdAt: ts,
-        updatedAt: ts
-      },
-      'reportedCases',
-      async (id) => {
-        const toast = await this.toastController.create({
-          message: "Report Submitted!",
-          duration: 2500
+      let filePath: Observable<any> = await this.handleUpload(`images/${this.name}_${new Date().getTime()}_${this.selectedDistrict}.png`)
+
+      if (this.editingId !== null)
+        await this.update({
+          ...data,
+          picture: filePath ?? this.imageUrl,
+          updatedAt: ts
         })
-        toast.present()
-        this.router.navigate(['/my-reports'])
-      },
-      async (err) => {
-        console.error(err)
-        const toast = await this.toastController.create({
-          message: "An error occured. Please try again later",
-          duration: 2500
+      else
+        await this.createNew({
+          ...data,
+          picture: filePath ?? null,
+          deleted: false,
+          createdAt: ts,
+          updatedAt: ts
         })
-        toast.present()
-        this.state = States.IDLE
+
+      const toast = await this.toastController.create({
+        message: `Report ${this.editingId !== null ? 'Updated' : 'Submitted'}!`,
+        duration: 2500
       })
+      toast.present()
+      this.router.navigate(['/my-reports'])
     } catch (e) {
       console.error(e)
       const toast = await this.toastController.create({

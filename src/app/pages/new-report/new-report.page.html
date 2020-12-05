@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/my-reports"></ion-back-button>
     </ion-buttons>
-    <ion-title>New Report</ion-title>
+    <ion-title>{{editingId !== null ? "Edit Report" : "New Report"}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -32,19 +32,19 @@
   </ion-item>
   <ion-item>
     <ion-label>Province</ion-label>
-    <ion-select placeholder="Select One" (ionChange)="handleProvinceChange($event)" interface="action-sheet">
+    <ion-select placeholder="Select One" (ionChange)="handleProvinceChange($event)" interface="action-sheet" [value]="selectedProvince">
       <ion-select-option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>City</ion-label>
-    <ion-select placeholder="Select One" disabled="{{cities.length === 0}}" (ionChange)="handleCityChange($event)" interface="action-sheet">
+    <ion-select placeholder="Select One" disabled="{{cities.length === 0}}" (ionChange)="handleCityChange($event)" interface="action-sheet" [value]="selectedCity">
       <ion-select-option *ngFor="let city of cities" [value]="city.id">{{city.name}}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>District</ion-label>
-    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}" (ionChange)="handleDistrictChange($event)" interface="action-sheet">
+    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}" (ionChange)="handleDistrictChange($event)" interface="action-sheet" [value]="selectedDistrict">
       <ion-select-option *ngFor="let district of districts" [value]="district.id">{{district.name}}</ion-select-option>
     </ion-select>
   </ion-item>
