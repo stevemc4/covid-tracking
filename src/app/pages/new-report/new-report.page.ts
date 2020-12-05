@@ -63,7 +63,7 @@ export class NewReportPage implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.editingId !== null) {
+    if (this.editingId) {
       const document = this.firestore.collection('reportedCases').doc(this.editingId).get()
       document.subscribe(docData => {
         // load data from observer
@@ -161,7 +161,7 @@ export class NewReportPage implements OnInit {
       }
       let filePath: Observable<any> = await this.handleUpload(`images/${this.name}_${new Date().getTime()}_${this.selectedDistrict}.png`)
 
-      if (this.editingId !== null)
+      if (this.editingId)
         await this.update({
           ...data,
           picture: filePath ?? this.imageUrl,

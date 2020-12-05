@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/my-reports"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{editingId !== null ? "Edit Report" : "New Report"}}</ion-title>
+    <ion-title>{{this.editingId ? "Editing Report" : "New Report"}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
