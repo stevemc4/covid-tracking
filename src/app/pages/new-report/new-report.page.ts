@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { ImagePicker } from '@ionic-native/image-picker/ngx'
 import { Platform, ToastController } from '@ionic/angular'
 import { ActivatedRoute, Router } from '@angular/router'
-import { FirebaseX } from '@ionic-native/firebase-x/ngx'
 import { AngularFireStorage } from '@angular/fire/storage'
 import { AngularFirestore } from '@angular/fire/firestore'
 import firebase from 'firebase'
@@ -47,7 +46,6 @@ export class NewReportPage implements OnInit {
     private imagePicker: ImagePicker,
     public platform: Platform,
     public toastController: ToastController,
-    private firebase: FirebaseX,
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
