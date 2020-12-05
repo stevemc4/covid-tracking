@@ -17,7 +17,12 @@ export class AdminPage implements OnInit {
   regions: typeof regions
 
   constructor(private firestore: AngularFirestore) {
-    this.data = firestore.collection('reportedCases').valueChanges({ idField: 'id' })
+    this.data = firestore
+      .collection(
+        'reportedCases',
+        q => q.orderBy('createdAt', 'desc')
+      )
+      .valueChanges({ idField: 'id' })
     this.groupedData = []
     this.regions = regions
   }

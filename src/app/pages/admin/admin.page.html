@@ -38,4 +38,49 @@
       </ion-card-content>
     </ng-template>
   </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Recently Reported</ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="(data | async)?.length > 0; else elseBlock">
+      <ng-template ngFor let-case [ngForOf]="(data | async)?.slice(0, 3)">
+        <ion-item lines="full">
+          <ion-avatar slot="start">
+            <img [src]="case.picture">
+          </ion-avatar>
+          <ion-label>
+            {{case.name}}
+            <ion-label color="medium">
+              {{case.gender === 'm' ? 'Male' : 'Female'}} · {{case.age}} years old
+            </ion-label>
+            <ion-label color="medium">
+              {{case.address}}, {{regions.getDistrict(case.district).name}},
+            </ion-label>
+            <ion-label color="medium">
+              {{regions.getCity(case.city).name}}, {{regions.getProvince(case.province).name}}
+            </ion-label>
+          </ion-label>
+          <ion-note slot="end">
+            {{case.createdAt.toDate().toLocaleString()}}
+          </ion-note>
+          <!-- <ion-button size="medium" fill="clear" color="primary"(click)="handleUpdate(case.id)">
+            <ion-icon name="pencil"></ion-icon>
+          </ion-button>
+          <ion-button size="medium" fill="clear" color="danger" (click)="handleDelete(case)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button> -->
+        </ion-item>
+      </ng-template>
+      <ion-item>
+        <ion-text color="primary">
+          View All
+        </ion-text>
+      </ion-item>
+    </ion-list>
+    <ng-template #elseBlock>
+      <ion-card-content>
+        <ion-text>No Data Yet</ion-text>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
 </ion-content>
