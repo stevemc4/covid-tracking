@@ -22,7 +22,7 @@
         inputmode="numeric"
         minlength="6"
         maxlength="6"
-        type="number"
+        type="text"
         placeholder="Enter your verification code"
       ></ion-input>
     </ion-item>
@@ -33,7 +33,7 @@
       (click)="handleLoginButton()"
       [disabled]="!phoneNumber || phoneNumber.length < 9 || pageState === state.LOADING || pageState === state.VERIFYING"
     >
-      <ion-text *ngIf="pageState !== state.LOADING && pageState !== VERIFYING; else elseBlock">Login</ion-text>
+      <ion-text *ngIf="pageState !== state.LOADING && pageState !== state.VERIFYING; else elseBlock">Login</ion-text>
       <ng-template #elseBlock>
         <ion-spinner name="dots"></ion-spinner>
       </ng-template>

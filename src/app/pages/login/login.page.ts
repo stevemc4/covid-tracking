@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
   handleLoginButton() {
     switch (this.pageState) {
       case State.IDLE: this.getCode(); break;
-      case State.CODE: this.getCode(); break;
+      case State.CODE: this.verifyCode(); break;
       default: break;
     }
   }
@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
   async verifyCode() {
     try {
       this.pageState = State.VERIFYING
-      this.firebaseConfirmation.confirm(this.code)
+      await this.firebaseConfirmation.confirm(this.code)
       this.router.navigate(['/my-reports'])
     } catch (e) {
       console.error(e)
