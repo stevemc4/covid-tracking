@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path: 'regions/:province/:city',
     loadChildren: () => import('./regions/regions.module').then( m => m.RegionsPageModule)
+  },
+  {
+    path: 'regions/:province/:city/:district',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   }
 ];
 
