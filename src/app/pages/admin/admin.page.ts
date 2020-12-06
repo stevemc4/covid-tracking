@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore'
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import regions from '../../helper/region'
 
@@ -14,6 +14,7 @@ export class AdminPage implements OnInit {
 
   data: Observable<any>
   groupedData: any[]
+  groupedDataSubscription: Subscription
   regions: typeof regions
 
   constructor(private firestore: AngularFirestore) {
@@ -28,7 +29,7 @@ export class AdminPage implements OnInit {
   }
 
   getGroupedData() {
-    this.data.subscribe((data: any[]) => {
+    this.groupedDataSubscription = this.data.subscribe((data: any[]) => {
       this.groupedData = data
         .reduce((prev, item) => {
           let mutated = [...prev];
@@ -49,6 +50,10 @@ export class AdminPage implements OnInit {
 
   ngOnInit() {
     this.getGroupedData()
+  }
+
+  ngOnDestroy() {
+    this.groupedDataSubscription.unsubscribe()
   }
 
 }

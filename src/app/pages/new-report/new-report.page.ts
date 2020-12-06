@@ -7,7 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore'
 import firebase from 'firebase'
 
 import regions, { City, District, Province } from '../../helper/region'
-import { Observable } from 'rxjs'
+import { Observable, Subscription } from 'rxjs'
 
 enum States {
   IDLE,
@@ -30,6 +30,8 @@ export class NewReportPage implements OnInit {
   // States
   state: States
   editingId: string
+  queryParamsSubscribtion: Subscription
+  documentSubscribtion: Subscription
 
   // Models
   name: string
@@ -51,7 +53,7 @@ export class NewReportPage implements OnInit {
     private storage: AngularFireStorage,
     private firestore: AngularFirestore
   ){
-    this.route.queryParams.subscribe(params => {
+    this.queryParamsSubscribtion = this.route.queryParams.subscribe(params => {
       this.editingId = params.id
     })
     this.state = States.IDLE 
@@ -65,7 +67,7 @@ export class NewReportPage implements OnInit {
   async ngOnInit() {
     if (this.editingId) {
       const document = this.firestore.collection('reportedCases').doc(this.editingId).get()
-      document.subscribe(docData => {
+      this.documentSubscribtion = document.subscribe(docData => {
         // load data from observer
         const data: any = docData.data()
 
@@ -86,6 +88,13 @@ export class NewReportPage implements OnInit {
         this.selectedDistrict = data.district
         this.address = data.address
       })
+    }
+  }
+
+  ngOnDestroy() {
+    this.queryParamsSubscribtion.unsubscribe()
+    if (this.documentSubscribtion) {
+      this.documentSubscribtion.unsubscribe()
     }
   }
 
