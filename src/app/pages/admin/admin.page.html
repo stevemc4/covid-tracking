@@ -23,13 +23,14 @@
       <ion-card-title>Top 5 Regions</ion-card-title>
     </ion-card-header>
     <ion-list *ngIf="groupedData.length > 0; else elseBlock">
-      <ion-item *ngFor="let region of groupedData">
+      <ion-item *ngFor="let region of groupedData" [routerLink]="['regions', region.province]">
         <ion-label slot="start">
           {{regions.getProvince(region.province).name}}
         </ion-label>
         <ion-badge slot="end" color="light">
           {{ region.count }}
         </ion-badge>
+        <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
       </ion-item>
       <ion-item [routerLink]="['/admin/regions']">
         <ion-text color="primary">
