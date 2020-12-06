@@ -89,30 +89,30 @@ export class LoginPage implements OnInit {
   }
 
   async handleUserRedirection(user: firebase.User) {
-    if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-      await this.firestore.collection('users').doc(user.uid).set({
-        uid: user.uid,
-        phoneNumber: user.phoneNumber,
-        role: 'USER'
-      })
-      this.router.navigate(['/my-reports'])
-    } else {
-      const userData = await this.firestore.collection('users').doc(user.uid).get().subscribe(data => {
-        const content: any = data.data()
-        userData.unsubscribe()
-        if (content.role === 'ADMIN')
-          this.router.navigate(['/admin'])
-        else
-          this.router.navigate(['/my-reports'])
-      })
-    }
+    const userData = this.firestore.collection('users').doc(user.uid).get().subscribe(data => {
+      const content: any = data.data()
+      userData.unsubscribe()
+      if (content.role === 'ADMIN')
+        this.router.navigate(['/admin'])
+      else
+        this.router.navigate(['/my-reports'])
+    })
   }
 
   async verifyCode() {
     try {
       this.pageState = State.VERIFYING
       const result = await this.firebaseConfirmation.confirm(this.code)
-      this.handleUserRedirection(result.user)
+      if (result.additionalUserInfo.isNewUser) {
+        await this.firestore.collection('users').doc(result.user.uid).set({
+          uid: result.user.uid,
+          phoneNumber: result.user.phoneNumber,
+          role: 'USER'
+        })
+        this.router.navigate(['/my-reports'])
+      } else {
+        this.handleUserRedirection(result.user)
+      }
     } catch (e) {
       console.error(e)
       const toast = await this.toastController.create({
