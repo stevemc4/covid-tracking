@@ -1,0 +1,35 @@
+#container {
+  padding: 86px 64px;
+
+  #phoneInput {
+    // --background: #e2e2e2;
+    border: none;
+    margin-top: 8px;
+    border-radius: 4px;
+
+    &.item-has-focus{
+      --highlight-background: transparent;
+    }
+
+    ion-input {
+      border: none;
+    }
+  }
+}
+
+#greeter {
+  margin-bottom: 32px;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+#loginButton {
+  margin-top: 16px;
+  border-radius: 4px;
+}
+
+#recaptcha-container {
+  .grecaptcha-badge {
+    display: none
+  }
+}
