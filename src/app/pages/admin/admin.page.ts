@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AngularFirestore } from '@angular/fire/firestore'
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
 
 import regions from '../../helper/region'
@@ -17,7 +20,7 @@ export class AdminPage implements OnInit {
   groupedDataSubscription: Subscription
   regions: typeof regions
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore, private alertController: AlertController, private auth: AngularFireAuth, private router: Router) {
     this.data = firestore
       .collection(
         'reportedCases',
@@ -54,6 +57,30 @@ export class AdminPage implements OnInit {
 
   ngOnDestroy() {
     this.groupedDataSubscription.unsubscribe()
+  }
+
+  async handleLogout() {
+    const alert = await this.alertController.create({
+      header: `Logging out`,
+      message: `Are you sure want to log out from the application?`,
+      buttons: [
+        {
+          text: 'Log Out',
+          role: 'primary',
+          cssClass: 'danger',
+          handler: async () => {
+            await this.auth.signOut()
+            this.router.navigate(['/login'])
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }
+      ]
+    })
+    alert.present()
   }
 
 }

@@ -67,4 +67,28 @@ export class MyReportsPage implements OnInit {
     })
   }
 
+  async handleLogout() {
+    const alert = await this.alertController.create({
+      header: `Logging out`,
+      message: `Are you sure want to log out from the application?`,
+      buttons: [
+        {
+          text: 'Log Out',
+          role: 'primary',
+          cssClass: 'danger',
+          handler: async () => {
+            await this.auth.signOut()
+            this.router.navigate(['/login'])
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }
+      ]
+    })
+    alert.present()
+  }
+
 }
