@@ -13,6 +13,18 @@ const routes: Routes = [
     path: 'reports',
     loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
   },
+  {
+    path: 'regions',
+    loadChildren: () => import('./regions/regions.module').then( m => m.RegionsPageModule)
+  },
+  {
+    path: 'regions/:province',
+    loadChildren: () => import('./regions/regions.module').then( m => m.RegionsPageModule)
+  },
+  {
+    path: 'regions/:province/:city',
+    loadChildren: () => import('./regions/regions.module').then( m => m.RegionsPageModule)
+  }
 ];
 
 @NgModule({
