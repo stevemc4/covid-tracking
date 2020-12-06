@@ -6,6 +6,7 @@ import firebase from 'firebase/app'
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 enum State {
   IDLE,
@@ -33,13 +34,19 @@ export class LoginPage implements OnInit {
     return State
   }
 
-  constructor(private window: WindowService, private auth: AngularFireAuth, private toastController: ToastController, private router: Router,) {
+  constructor(
+    private window: WindowService,
+    private auth: AngularFireAuth,
+    private toastController: ToastController,
+    private router: Router,
+    private firestore: AngularFirestore
+  ) {
     this.pageState = State.IDLE
   }
 
   ngOnInit() {
     this.authSubscription = this.auth.user.subscribe(user => {
-      if (user) this.router.navigate(['/my-reports'])
+      if (user) this.handleUserRedirection(user)
     })
   }
 
@@ -81,11 +88,31 @@ export class LoginPage implements OnInit {
     }
   }
 
+  async handleUserRedirection(user: firebase.User) {
+    if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+      await this.firestore.collection('users').doc(user.uid).set({
+        uid: user.uid,
+        phoneNumber: user.phoneNumber,
+        role: 'USER'
+      })
+      this.router.navigate(['/my-reports'])
+    } else {
+      const userData = await this.firestore.collection('users').doc(user.uid).get().subscribe(data => {
+        const content: any = data.data()
+        userData.unsubscribe()
+        if (content.role === 'ADMIN')
+          this.router.navigate(['/admin'])
+        else
+          this.router.navigate(['/my-reports'])
+      })
+    }
+  }
+
   async verifyCode() {
     try {
       this.pageState = State.VERIFYING
-      await this.firebaseConfirmation.confirm(this.code)
-      this.router.navigate(['/my-reports'])
+      const result = await this.firebaseConfirmation.confirm(this.code)
+      this.handleUserRedirection(result.user)
     } catch (e) {
       console.error(e)
       const toast = await this.toastController.create({
