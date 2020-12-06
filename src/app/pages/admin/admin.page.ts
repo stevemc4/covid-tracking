@@ -20,7 +20,7 @@ export class AdminPage implements OnInit {
     this.data = firestore
       .collection(
         'reportedCases',
-        q => q.orderBy('createdAt', 'desc')
+        q => q.orderBy('createdAt', 'desc').where('deleted', '==', false)
       )
       .valueChanges({ idField: 'id' })
     this.groupedData = []

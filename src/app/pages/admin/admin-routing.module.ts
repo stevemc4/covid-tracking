@@ -6,8 +6,13 @@ import { AdminPage } from './admin.page';
 const routes: Routes = [
   {
     path: '',
-    component: AdminPage
-  }
+    component: AdminPage,
+  },
+  
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then( m => m.ReportsPageModule)
+  },
 ];
 
 @NgModule({
