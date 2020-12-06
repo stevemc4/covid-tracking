@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireAuth } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular'
 import { Observable } from 'rxjs';
@@ -18,7 +19,7 @@ export class MyReportsPage implements OnInit {
   data: Observable<any[]>
   region: typeof RegionHelper
 
-  constructor(private router: Router, private firestore: AngularFirestore, private alertController: AlertController) {
+  constructor(private router: Router, private firestore: AngularFirestore, private alertController: AlertController, public auth: AngularFireAuth) {
     this.data = this.firestore.collection('reportedCases', q =>
       q.where('deleted', '==', false)
     ).valueChanges({ idField: 'id' })

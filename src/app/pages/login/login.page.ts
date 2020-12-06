@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth'
 import firebase from 'firebase/app'
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 enum State {
   IDLE,
@@ -26,6 +27,7 @@ export class LoginPage implements OnInit {
   pageState: State
   firebaseConfirmation: firebase.auth.ConfirmationResult
   recaptchaVerifier: firebase.auth.RecaptchaVerifier
+  authSubscription: Subscription
 
   public get state(): typeof State {
     return State
@@ -36,6 +38,15 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    this.authSubscription = this.auth.user.subscribe(user => {
+      if (user) this.router.navigate(['/my-reports'])
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe()
+    }
   }
 
   async ionViewWillEnter() {
