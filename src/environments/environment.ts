@@ -13,6 +13,10 @@ export const environment = {
     messagingSenderId: "348034440622",
     appId: "1:348034440622:web:8e32d47af94c56e232fc3f",
     measurementId: "G-2KSVK4HNMX"
+  },
+  // this thing should be put in an .env file
+  fcm: {
+    token: "	AAAAUQh4Ha4:APA91bFFKIbH1B3Hq-oDQOZ1nGfcMl2EYRupd8NsaN4A0tQ0qKeCicKlFz7-it_NI3Hmie_Vjze3JhVpaFwhX4YiaAcqJrI2HsjlbQ1uo7fVGLomBuG4D4Z5Oq_LaPyfkOHbTN2GJlkC"
   }
 };
 

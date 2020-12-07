@@ -4,9 +4,12 @@ import { Platform, ToastController } from '@ionic/angular'
 import { ActivatedRoute, Router } from '@angular/router'
 import { AngularFireStorage } from '@angular/fire/storage'
 import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireAuth } from '@angular/fire/auth'
 import firebase from 'firebase'
+import axios from 'axios'
 
 import regions, { City, District, Province } from '../../helper/region'
+import { environment } from '../../../environments/environment'
 import { Observable, Subscription } from 'rxjs'
 
 enum States {
@@ -26,12 +29,14 @@ export class NewReportPage implements OnInit {
   provinces: Province[]
   cities: City[]
   districts: District[]
+  userId: string
 
   // States
   state: States
   editingId: string
   queryParamsSubscribtion: Subscription
   documentSubscribtion: Subscription
+  userSubscription: Subscription
 
   // Models
   name: string
@@ -51,10 +56,14 @@ export class NewReportPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private storage: AngularFireStorage,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private auth: AngularFireAuth
   ){
     this.queryParamsSubscribtion = this.route.queryParams.subscribe(params => {
       this.editingId = params.id
+    })
+    this.userSubscription = this.auth.user.subscribe(user => {
+      this.userId = user.uid
     })
     this.state = States.IDLE 
     this.provinces = regions.getProvinces()
@@ -93,6 +102,7 @@ export class NewReportPage implements OnInit {
 
   ngOnDestroy() {
     this.queryParamsSubscribtion.unsubscribe()
+    this.userSubscription.unsubscribe()
     if (this.documentSubscribtion) {
       this.documentSubscribtion.unsubscribe()
     }
@@ -140,6 +150,22 @@ export class NewReportPage implements OnInit {
   async createNew(data: any) {
     try {
       await this.firestore.collection('reportedCases').doc().set(data)
+      await axios.post(
+        'https://fcm.googleapis.com/fcm/send',
+        {
+          to: '/topics/new-case',
+          notification: {
+            title: 'New Case Reported',
+            body: `A new case has been reported in ${regions.getDistrict(this.selectedDistrict).name}, ${regions.getCity(this.selectedCity).name}`
+          }
+        },
+        {
+          headers: {
+            Authorization: `key=${environment.fcm.token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
     } catch (e) {
       console.error(e)
       throw e
@@ -179,6 +205,7 @@ export class NewReportPage implements OnInit {
       else
         await this.createNew({
           ...data,
+          user: this.userId,
           picture: filePath ?? null,
           deleted: false,
           createdAt: ts,

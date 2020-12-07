@@ -64,13 +64,17 @@ export class AdminPage implements OnInit {
 
   ngOnInit() {
     this.getGroupedData()
-    PushNotifications.requestPermission().then( async result => {
-      if (result.granted) {
-        await PushNotifications.register();
-        await fcm.subscribeTo({ topic: 'new-case' })
-      } else {
-      }
-    });
+    try {
+      PushNotifications.requestPermission().then( async result => {
+        if (result.granted) {
+          await PushNotifications.register();
+          await fcm.subscribeTo({ topic: 'new-case' })
+        } else {
+        }
+      });
+    } catch (e) {
+      
+    }
   }
 
   ngOnDestroy() {
@@ -87,7 +91,11 @@ export class AdminPage implements OnInit {
           role: 'primary',
           cssClass: 'danger',
           handler: async () => {
-            await fcm.unsubscribeFrom({ topic: 'new-case' })
+            try {
+              await fcm.unsubscribeFrom({ topic: 'new-case' })
+            } catch (e) {
+
+            }
             await this.auth.signOut()
             this.router.navigate(['/login'])
           }
