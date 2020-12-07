@@ -3,7 +3,7 @@
     <ion-text>
       <h1 id="greeter">Welcome!</h1>
     </ion-text>
-    <ion-item id="phoneInput">
+    <ion-item id="phoneInput" mode="ios">
       <ion-label>+62</ion-label>
       <ion-input
         [(ngModel)]="phoneNumber"
@@ -13,9 +13,10 @@
         maxlength="13"
         type="tel"
         placeholder="Enter your phone number"
+        mode="ios"
       ></ion-input>
     </ion-item>
-    <ion-item id="phoneInput" *ngIf="pageState === state.CODE || pageState === state.VERIFYING">
+    <ion-item id="phoneInput" *ngIf="pageState === state.CODE || pageState === state.VERIFYING" mode="ios">
       <ion-input
         [(ngModel)]="code"
         autocomplete="one-time-code"
@@ -24,6 +25,7 @@
         maxlength="6"
         type="text"
         placeholder="Enter your verification code"
+        mode="ios"
       ></ion-input>
     </ion-item>
     <ion-button
