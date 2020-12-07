@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth'
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular'
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/app'
 
 import RegionHelper from '../../helper/region'
@@ -17,16 +17,23 @@ import RegionHelper from '../../helper/region'
 export class MyReportsPage implements OnInit {
 
   data: Observable<any[]>
+  userSubscription: Subscription
   region: typeof RegionHelper
 
   constructor(private router: Router, private firestore: AngularFirestore, private alertController: AlertController, public auth: AngularFireAuth) {
-    this.data = this.firestore.collection('reportedCases', q =>
-      q.where('deleted', '==', false)
-    ).valueChanges({ idField: 'id' })
+    this.userSubscription = this.auth.user.subscribe(user => {
+      this.data = this.firestore.collection('reportedCases', q =>
+        q.where('deleted', '==', false).where('user', '==', user.uid).orderBy('createdAt', 'desc')
+      ).valueChanges({ idField: 'id' })
+    })
     this.region = RegionHelper
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe()
   }
 
   onFabClick() {
