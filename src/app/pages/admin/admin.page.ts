@@ -5,6 +5,17 @@ import { AngularFirestore } from '@angular/fire/firestore'
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
+import { FCM } from '@capacitor-community/fcm'
+
+import {
+  Plugins,
+  PushNotification,
+  PushNotificationToken,
+  PushNotificationActionPerformed,
+} from '@capacitor/core';
+
+const { PushNotifications } = Plugins;
+const fcm = new FCM()
 
 import regions from '../../helper/region'
 
@@ -53,6 +64,13 @@ export class AdminPage implements OnInit {
 
   ngOnInit() {
     this.getGroupedData()
+    PushNotifications.requestPermission().then( async result => {
+      if (result.granted) {
+        await PushNotifications.register();
+        await fcm.subscribeTo({ topic: 'new-case' })
+      } else {
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -69,6 +87,7 @@ export class AdminPage implements OnInit {
           role: 'primary',
           cssClass: 'danger',
           handler: async () => {
+            await fcm.unsubscribeFrom({ topic: 'new-case' })
             await this.auth.signOut()
             this.router.navigate(['/login'])
           }
