@@ -16,7 +16,7 @@
   <!-- <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher> -->
-  <ion-list *ngIf="(data | async)?.length > 0">
+  <ion-list *ngIf="(data | async)?.length > 0" lines="none">
     <ng-template ngFor let-case [ngForOf]="data | async">
       <ion-item lines="full">
         <ion-avatar slot="start">

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list lines="none">
     <ion-item *ngFor="let case of groupedData" [routerLink]="[case.id]">
       <ion-label slot="start">
         {{case.name}}

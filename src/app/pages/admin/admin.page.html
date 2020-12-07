@@ -27,7 +27,7 @@
     <ion-card-header>
       <ion-card-title>Top 5 Regions</ion-card-title>
     </ion-card-header>
-    <ion-list *ngIf="groupedData.length > 0; else elseBlock">
+    <ion-list *ngIf="groupedData.length > 0; else elseBlock" lines="none">
       <ion-item *ngFor="let region of groupedData" [routerLink]="['regions', region.province]">
         <ion-label slot="start">
           {{regions.getProvince(region.province).name}}
@@ -53,7 +53,7 @@
     <ion-card-header>
       <ion-card-title>Recently Reported</ion-card-title>
     </ion-card-header>
-    <ion-list *ngIf="(data | async)?.length > 0; else elseBlock">
+    <ion-list *ngIf="(data | async)?.length > 0; else elseBlock" lines="none">
       <ng-template ngFor let-case [ngForOf]="(data | async)?.slice(0, 3)">
         <ion-item lines="full">
           <ion-avatar slot="start">
