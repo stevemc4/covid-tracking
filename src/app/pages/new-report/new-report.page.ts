@@ -69,7 +69,7 @@ export class NewReportPage implements OnInit {
     this.provinces = regions.getProvinces()
     this.cities = []
     this.districts = []
-    this.imageUrl = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw=='
+    this.imageUrl = 'assets/img/default.png'
     this.defaultImage = this.imageUrl
   }
 

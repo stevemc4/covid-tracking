@@ -57,7 +57,7 @@
       <ng-template ngFor let-case [ngForOf]="(data | async)?.slice(0, 3)">
         <ion-item lines="full">
           <ion-avatar slot="start">
-            <img [src]="case.picture">
+            <img [src]="case.picture || 'assets/img/default.png'">
           </ion-avatar>
           <ion-label>
             {{case.name}}
