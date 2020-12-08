@@ -110,11 +110,14 @@ export class NewReportPage implements OnInit {
 
   handleProvinceChange(e) {
     this.selectedProvince = e.target.value
+    this.selectedCity = null
+    this.selectedDistrict = null
     this.cities = regions.getCities(e.target.value)
   }
 
   handleCityChange(e) {
     this.selectedCity = e.target.value
+    this.selectedDistrict = null
     this.districts = regions.getDistricts(e.target.value)
   }
 
