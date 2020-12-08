@@ -93,9 +93,9 @@ export class LoginPage implements OnInit {
       const content: any = data.data()
       userData.unsubscribe()
       if (content.role === 'ADMIN')
-        this.router.navigate(['/admin'])
+        this.router.navigate(['/admin'], { replaceUrl: true })
       else
-        this.router.navigate(['/my-reports'])
+        this.router.navigate(['/my-reports'], { replaceUrl: true })
     })
   }
 
@@ -109,7 +109,7 @@ export class LoginPage implements OnInit {
           phoneNumber: result.user.phoneNumber,
           role: 'USER'
         })
-        this.router.navigate(['/my-reports'])
+        this.router.navigate(['/my-reports'], { replaceUrl: true })
       } else {
         this.handleUserRedirection(result.user)
       }
