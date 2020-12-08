@@ -216,7 +216,7 @@ export class NewReportPage implements OnInit {
         })
 
       const toast = await this.toastController.create({
-        message: `Report ${this.editingId !== null ? 'Updated' : 'Submitted'}!`,
+        message: `Report ${this.editingId ? 'Updated' : 'Submitted'}!`,
         duration: 2500
       })
       toast.present()
