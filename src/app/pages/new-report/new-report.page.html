@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/my-reports"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{this.editingId ? "Editing Report" : "New Report"}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item lines="none">
+    <ion-avatar slot="start" id="imageContainer">
+      <img [src]="imageUrl">
+    </ion-avatar>
+    <ion-label>Picture</ion-label>
+    <ion-button (click)="selectImage()" size="default">Select Image</ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input [(ngModel)]="name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Age</ion-label>
+    <ion-input type="number" [(ngModel)]="age"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Gender</ion-label>
+    <ion-select placeholder="Select One" [(ngModel)]="gender" interface="action-sheet">
+      <ion-select-option value="f">Female</ion-select-option>
+      <ion-select-option value="m">Male</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Province</ion-label>
+    <ion-select placeholder="Select One" (ionChange)="handleProvinceChange($event)" interface="action-sheet" [value]="selectedProvince">
+      <ion-select-option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>City</ion-label>
+    <ion-select placeholder="Select One" disabled="{{cities.length === 0}}" (ionChange)="handleCityChange($event)" interface="action-sheet" [value]="selectedCity">
+      <ion-select-option *ngFor="let city of cities" [value]="city.id">{{city.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>District</ion-label>
+    <ion-select placeholder="Select One" disabled="{{districts.length === 0}}" (ionChange)="handleDistrictChange($event)" interface="action-sheet" [value]="selectedDistrict">
+      <ion-select-option *ngFor="let district of districts" [value]="district.id">{{district.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Address</ion-label>
+    <ion-input [(ngModel)]="address"></ion-input>
+  </ion-item>
+  <ion-button expand="block" size="default" (click)="handleSubmit()"  [disabled]="checkSubmitStatus()">{{getSubmitButtonText()}}</ion-button>
+</ion-content>

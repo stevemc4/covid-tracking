@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="handleLogout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reported Cases</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text color="primary">
+        <h1>{{(data | async)?.length || 0}}</h1>
+      </ion-text>
+      <ion-text>
+        <span>Cases</span>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Top 5 Regions</ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="groupedData.length > 0; else elseBlock" lines="none">
+      <ion-item *ngFor="let region of groupedData" [routerLink]="['regions', region.province]">
+        <ion-label slot="start">
+          {{regions.getProvince(region.province).name}}
+        </ion-label>
+        <ion-badge slot="end" color="light">
+          {{ region.count }}
+        </ion-badge>
+        <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+      </ion-item>
+      <ion-item [routerLink]="['/admin/regions']">
+        <ion-text color="primary">
+          View All
+        </ion-text>
+      </ion-item>
+    </ion-list>
+    <ng-template #elseBlock>
+      <ion-card-content>
+        <ion-text>No Data Yet</ion-text>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Recently Reported</ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="(data | async)?.length > 0; else elseBlock" lines="none">
+      <ng-template ngFor let-case [ngForOf]="(data | async)?.slice(0, 3)">
+        <ion-item lines="full">
+          <ion-avatar slot="start">
+            <img [src]="case.picture || 'assets/img/default.png'">
+          </ion-avatar>
+          <ion-label>
+            {{case.name}}
+            <ion-label color="medium">
+              {{case.gender === 'm' ? 'Male' : 'Female'}} · {{case.age}} years old
+            </ion-label>
+            <ion-label color="medium">
+              {{case.address}}, {{regions.getDistrict(case.district).name}},
+            </ion-label>
+            <ion-label color="medium">
+              {{regions.getCity(case.city).name}}, {{regions.getProvince(case.province).name}}
+            </ion-label>
+          </ion-label>
+          <ion-note slot="end">
+            {{case.createdAt.toDate().toLocaleString()}}
+          </ion-note>
+          <!-- <ion-button size="medium" fill="clear" color="primary"(click)="handleUpdate(case.id)">
+            <ion-icon name="pencil"></ion-icon>
+          </ion-button>
+          <ion-button size="medium" fill="clear" color="danger" (click)="handleDelete(case)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button> -->
+        </ion-item>
+      </ng-template>
+      <ion-item [routerLink]="['/admin/reports']">
+        <ion-text color="primary">
+          View All
+        </ion-text>
+      </ion-item>
+    </ion-list>
+    <ng-template #elseBlock>
+      <ion-card-content>
+        <ion-text>No Data Yet</ion-text>
+      </ion-card-content>
+    </ng-template>
+  </ion-card>
+</ion-content>

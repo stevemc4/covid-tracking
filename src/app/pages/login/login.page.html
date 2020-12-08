@@ -1,0 +1,45 @@
+<ion-content>
+  <div id="container">
+    <ion-text>
+      <h1 id="greeter">Welcome!</h1>
+    </ion-text>
+    <ion-item id="phoneInput" mode="ios">
+      <ion-label>+62</ion-label>
+      <ion-input
+        [(ngModel)]="phoneNumber"
+        autocomplete="tel"
+        inputmode="tel"
+        minlength="9"
+        maxlength="13"
+        type="tel"
+        placeholder="Enter your phone number"
+        mode="ios"
+      ></ion-input>
+    </ion-item>
+    <ion-item id="phoneInput" *ngIf="pageState === state.CODE || pageState === state.VERIFYING" mode="ios">
+      <ion-input
+        [(ngModel)]="code"
+        autocomplete="one-time-code"
+        inputmode="numeric"
+        minlength="6"
+        maxlength="6"
+        type="text"
+        placeholder="Enter your verification code"
+        mode="ios"
+      ></ion-input>
+    </ion-item>
+    <ion-button
+      expand="block"
+      size="default"
+      id="loginButton"
+      (click)="handleLoginButton()"
+      [disabled]="!phoneNumber || phoneNumber.length < 9 || pageState === state.LOADING || pageState === state.VERIFYING"
+    >
+      <ion-text *ngIf="pageState !== state.LOADING && pageState !== state.VERIFYING; else elseBlock">Login</ion-text>
+      <ng-template #elseBlock>
+        <ion-spinner name="dots"></ion-spinner>
+      </ng-template>
+    </ion-button>
+  </div>
+  <div id="recaptcha-container"></div>
+</ion-content>

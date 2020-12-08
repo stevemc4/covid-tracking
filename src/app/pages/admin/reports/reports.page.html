@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reported Cases</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Reports</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> -->
+  <ion-list *ngIf="(data | async)?.length > 0" lines="none">
+    <ng-template ngFor let-case [ngForOf]="data | async">
+      <ion-item lines="full">
+        <ion-avatar slot="start">
+          <img [src]="case.picture || 'assets/img/default.png'">
+        </ion-avatar>
+        <ion-label>
+          {{case.name}}
+          <ion-label color="medium">
+            {{case.gender === 'm' ? 'Male' : 'Female'}} · {{case.age}} years old
+          </ion-label>
+          <ion-label color="medium">
+            {{case.address}}, {{region.getDistrict(case.district).name}},
+          </ion-label>
+          <ion-label color="medium">
+            {{region.getCity(case.city).name}}, {{region.getProvince(case.province).name}}
+          </ion-label>
+        </ion-label>
+        <ion-note slot="end">
+          {{case.createdAt.toDate().toLocaleString()}}
+        </ion-note>
+        <!-- <ion-button size="medium" fill="clear" color="primary"(click)="handleUpdate(case.id)">
+          <ion-icon name="pencil"></ion-icon>
+        </ion-button>
+        <ion-button size="medium" fill="clear" color="danger" (click)="handleDelete(case)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button> -->
+      </ion-item>
+    </ng-template>
+  </ion-list>
+  <div id="empty" *ngIf="(data | async)?.length === 0">
+    <strong>No Reports Yet</strong>
+  </div>
+</ion-content>

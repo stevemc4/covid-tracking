@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CovidTracker</string>
+    <string name="title_activity_main">CovidTracker</string>
+    <string name="package_name">me.dhikarizky.covidtracker</string>
+    <string name="custom_url_scheme">me.dhikarizky.covidtracker</string>
+</resources>
