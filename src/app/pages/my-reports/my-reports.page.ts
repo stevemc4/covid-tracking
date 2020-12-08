@@ -85,7 +85,7 @@ export class MyReportsPage implements OnInit {
           cssClass: 'danger',
           handler: async () => {
             await this.auth.signOut()
-            this.router.navigate(['/login'])
+            this.router.navigate(['/login'], { replaceUrl: true })
           }
         },
         {

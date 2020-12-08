@@ -97,7 +97,7 @@ export class AdminPage implements OnInit {
 
             }
             await this.auth.signOut()
-            this.router.navigate(['/login'])
+            this.router.navigate(['/login'], { replaceUrl: true })
           }
         },
         {
